@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Room Agent</title>
+<style>
+:root{--bg:#f6f6f3;--card:#fff;--fg:#1c1c1a;--mut:#6b6b66;--bd:#e3e3dd;--ac:#2f6f5e;--warn:#b4531a}
+@media (prefers-color-scheme:dark){:root{--bg:#121413;--card:#1b1e1c;--fg:#ececE8;--mut:#9a9d98;--bd:#2c302d;--ac:#6cc3a8;--warn:#e59a62}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:18px;font-weight:500;margin:4px 0 12px;display:flex;justify-content:space-between;align-items:center}
+h2{font-size:13px;font-weight:500;color:var(--mut);margin:20px 0 8px;text-transform:none}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+.row{display:flex;gap:8px}.mut{color:var(--mut);font-size:13px}
+input{flex:1;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--fg)}
+button{font:inherit;padding:10px 14px;border-radius:10px;border:0;background:var(--ac);color:var(--bg);cursor:pointer}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--mut);margin-right:6px}.on{background:var(--ac)}.off{background:var(--warn)}
+details summary{cursor:pointer}.tx{white-space:pre-wrap;color:var(--mut);font-size:13px;margin-top:8px}
+</style></head><body><main>
+<h1>Room Agent <span class="mut" id="sess"></span></h1>
+<div class="row"><input id="cmd" placeholder="Type a command, e.g. summarize the last convo"><button id="go">Send</button></div>
+<h2>Items</h2><div id="beacons"></div>
+<h2>Notifications</h2><div id="notes"></div>
+<h2>Reminders</h2><div id="rems"></div>
+<h2>Conversations</h2><div id="convos"></div>
+</main><script>
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const t=ts=>new Date(ts*1000).toLocaleString([], {weekday:'short',hour:'2-digit',minute:'2-digit'});
+async function load(){try{const s=await (await fetch('/api/state')).json();
+$('sess').textContent=s.session?'listening for conversation end…':'';
+$('beacons').innerHTML=Object.entries(s.beacons).map(([n,b])=>`<div class="card"><span class="dot ${b.present?'on':'off'}"></span>${esc(n)} <span class="mut">${b.present?'in range ('+b.rssi+' dBm)':'out of range'}</span></div>`).join('')||'<div class="mut">No beacons configured</div>';
+$('notes').innerHTML=s.notifications.map(n=>`<div class="card">${esc(n.text)}<div class="mut">${t(n.ts)} · ${esc(n.source)}</div></div>`).join('')||'<div class="mut">Nothing yet</div>';
+$('rems').innerHTML=s.reminders.map(r=>`<div class="card" style="${r.fired?'opacity:.55':''}">${esc(r.message)}<div class="mut">${r.kind==='time'?t(r.due):esc(r.kind.replace('_',' '))+' · '+esc(r.label)} · ${r.fired?'done':'pending'}</div></div>`).join('')||'<div class="mut">None</div>';
+const by={};s.transcripts.filter(x=>x.kind==='speech').forEach(x=>(by[x.conv]=by[x.conv]||[]).push(x));
+$('convos').innerHTML=s.convos.map(c=>{const ls=(by[c.id]||[]).slice().reverse();return `<div class="card"><details><summary>${t(c.start)} · ${Math.max(1,Math.round((c.end-c.start)/60))} min<div>${esc(c.summary||'No summary yet - say “hey room, summarize the last conversation”')}</div></summary><div class="tx">${ls.map(l=>esc(l.text)).join('\n')}</div></details></div>`}).join('')||'<div class="mut">None yet</div>'}catch(e){}}
+$('go').onclick=async()=>{const v=$('cmd').value.trim();if(!v)return;$('cmd').value='';await fetch('/api/command',{method:'POST',body:JSON.stringify({text:v})});setTimeout(load,2500)};
+$('cmd').onkeydown=e=>{if(e.key==='Enter')$('go').click()};load();setInterval(load,3000);
+</script></body></html>
