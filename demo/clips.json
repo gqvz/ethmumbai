@@ -1,0 +1,8 @@
+{
+ "d1_session": "Hey room, I'm going into a conversation. Summarize it after.",
+ "d2_talk": "So for the hackathon we decided to use Arkiv for storing every recording. Priya will finish the dashboard design by Friday, and the demo is on Saturday at noon. We also need to ask the zero G team about the storage quota.",
+ "d3_remind": "Hey room, remind me next week to follow up with the Arkiv team.",
+ "d4_bag": "Hey room, remind me if I leave this room that I should take my bag.",
+ "d5_search": "Hey room, what was that thing about the storage quota?",
+ "d6_summary": "Hey room, summarize the last conversation."
+}
