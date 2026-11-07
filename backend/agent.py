@@ -267,6 +267,11 @@ def _run_command(text: str, source="voice", quiet_none=False):
                 d = f", about {b['distance_m']} m away" if b.get("distance_m") is not None else ""
                 parts.append(f"{k}: in range{d} ({b.get('rssi')} dBm, via {b.get('source')})")
             else: parts.append(f"{k}: not in range")
+        try:
+            m, ts = json.loads(_kv("hw") or "{}").get("servo", ["-", 0])
+            parts.append("door: " + ("open" if m == "a90" else "closed" if m == "a0" else f"at {m[1:]} degrees" if m.startswith("a") and m[1:].isdigit()
+                                     else "sweeping" if m == "sweep" and time.time() - ts < 8 else "not set (servo is showing the gauge)"))
+        except Exception: pass
         parts.append("mics: streaming" if time.time() - LAST_AUDIO < 5 else "mics: no audio right now")
         with _lock, _conn() as c: n = c.execute("SELECT COUNT(*) FROM reminders WHERE fired=0").fetchone()[0]
         parts.append(f"{n} reminder{'s' if n != 1 else ''} pending")

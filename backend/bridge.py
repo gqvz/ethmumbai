@@ -136,7 +136,7 @@ class Ingest(BaseHTTPRequestHandler):
             d = first.get("distance_m"); d = -1 if d is None else d
             kind = (st["notifications"][0]["source"] or "none").replace(" ", "_") if st["notifications"] else "none"
             import hardware
-            body, ctype = f"{int(bool(first.get('present')))} {d} {int(bool(st['live']))} {nid} {kind} {hardware.feed()}".encode(), "text/plain"
+            body, ctype = f"{int(bool(first.get('present') or (first.get('age_s') is not None and first['age_s'] < 90)))} {d} {int(bool(st['live']))} {nid} {kind} {hardware.feed()}".encode(), "text/plain"
         elif self.path.startswith("/api/episodes") or self.path.startswith("/api/episode/verify"):
             import episodes
             from urllib.parse import urlparse, parse_qs

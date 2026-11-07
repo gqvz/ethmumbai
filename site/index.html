@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atlas · a wearable agent with a body</title>
+<meta name="description" content="Atlas listens to the room, remembers it, nudges you, and moves real hardware. Decisions run on 0G.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=13">
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="#top">Atlas</a>
+  <nav><a href="#listens">Listens</a><a href="#remembers">Remembers</a><a href="#knows">Knows</a><a href="#acts">Acts</a><a href="#zerog">0G</a></nav>
+  <a class="nav-link" href="https://github.com/gqvz/ethmumbai" target="_blank" rel="noopener">Source ↗</a>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="field" aria-hidden="true"></canvas>
+    <h1 class="mega" aria-label="Atlas"><span>ATLAS</span></h1>
+    <div class="hero-copy">
+      <p class="eyebrow mono">ETHGlobal Mumbai &nbsp;/&nbsp; 0G Physical AI</p>
+      <p class="hero-line">A wearable agent<br>with a body.</p>
+      <p class="hero-sub">It listens, remembers, nudges you, and moves real things. Every decision runs on 0G.</p>
+      <a class="btn" href="#acts">See it move <span>↓</span></a>
+    </div>
+    <div class="hero-meta mono"><span>Say “Hey Atlas”</span><span>ESP32 · ESP8266 · Android</span></div>
+  </section>
+
+  <!-- LISTENS -->
+  <section id="listens" class="dark">
+    <div class="wrap">
+      <p class="eyebrow mono">01 / Listens</p>
+      <h2 class="big reveal">It never stops listening.</h2>
+      <canvas id="wave" height="120"></canvas>
+      <div class="two">
+        <p class="body reveal">A wireless mic feeds an ESP32 around the clock. A noise gate throws away silence, fans and background chatter, so only speech reaches 0G. Say “Hey Atlas” and it acts. Otherwise it just remembers.</p>
+        <p class="live mono"><i></i><span id="live-text"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REMEMBERS -->
+  <section id="remembers" class="light">
+    <div class="wrap">
+      <p class="eyebrow mono">02 / Remembers</p>
+      <h2 class="big reveal">It remembers the room.</h2>
+      <div class="rows">
+        <div class="row reveal"><span class="k mono">Summaries</span><p class="t">It closes a conversation after a pause and writes the summary itself. Ask later, “what did we decide about the quota?”</p><p class="eg mono" id="eg-sum"></p></div>
+        <div class="row reveal"><span class="k mono">Nudges</span><p class="t">It hears what you promised and reminds you ten minutes later. It never invents a commitment.</p><p class="eg mono">“You said you’d follow up with Rohan.”</p></div>
+        <div class="row reveal"><span class="k mono">Transcripts</span><p class="t">Ask for the full transcript or an export. Conversations are hashed and stored on 0G, so they can be verified.</p><p class="eg mono">sha256 68241d40…8a088</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KNOWS -->
+  <section id="knows" class="light alt">
+    <div class="wrap">
+      <p class="eyebrow mono">03 / Knows</p>
+      <h2 class="big reveal">It knows where your things are.</h2>
+      <div class="track" id="track">
+        <div class="axis"><span class="you mono">you</span><i class="thresh"></i><span class="lim mono">range limit</span><b class="dot" id="dot"><em class="mono">headphones</em></b></div>
+        <p class="status mono" id="trk">in range · 1.2 m</p>
+      </div>
+      <div class="rows">
+        <div class="row reveal"><span class="k mono">By time</span><p class="t">“Remind me tomorrow to ship the README.”</p></div>
+        <div class="row reveal"><span class="k mono">By place</span><p class="t">“Remind me if I leave without my headphones.” An ESP32 scans for the headphones and the bag tag.</p></div>
+        <div class="row reveal"><span class="k mono">By anything</span><p class="t">Leaving range is a trigger. It can notify you, buzz, or move the door.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTS (pinned, scroll drives the 3D device) -->
+  <section id="acts" class="acts">
+    <div class="pin">
+      <div class="wrap acts-wrap">
+        <div class="acts-copy">
+          <p class="eyebrow mono">04 / Acts</p>
+          <h2 class="big">It moves<br>real things.</h2>
+          <div class="cmds" id="cmds">
+            <p data-i="0"><span class="mono">01</span>“Close the door…”</p>
+            <p data-i="1"><span class="mono">02</span>“…then buzz…”</p>
+            <p data-i="2"><span class="mono">03</span>“…then open it.”</p>
+            <p data-i="3"><span class="mono">04</span>“Atlas, SOS.”</p>
+            <p data-i="5"><span class="mono">05</span>Your headphones leave the room.</p>
+          </div>
+          <p class="cap mono" id="cap">A servo, an LED and a buzzer on an ESP8266.</p>
+        </div>
+        <svg id="stage" viewBox="0 0 640 460" role="img" aria-label="Line drawing of a room with a desk, a gauge, a lamp, headphones and a door">
+          <defs><radialGradient id="lg"><stop offset="0" stop-color="#ff5a1f" stop-opacity=".5"/><stop offset="1" stop-color="#ff5a1f" stop-opacity="0"/></radialGradient></defs>
+          <line class="ink" x1="10" y1="410" x2="630" y2="410"/>
+          <rect class="ink" x="440" y="110" width="124" height="300"/>
+          <rect class="void" x="446" y="116" width="112" height="294"/>
+          <g id="s-door"><rect class="door" x="446" y="116" width="112" height="294"/><circle class="knob" cx="544" cy="270" r="4"/></g>
+          <text class="lbl" x="446" y="100">DOOR</text>
+          <rect class="ink" x="30" y="300" width="290" height="9"/><line class="ink" x1="46" y1="309" x2="46" y2="410"/><line class="ink" x1="304" y1="309" x2="304" y2="410"/>
+          <line class="ink" x1="110" y1="300" x2="150" y2="289"/>
+          <g transform="translate(130 222)"><circle class="ink dial" r="64"/><g id="s-ticks"></g><g id="s-needle"><line class="needle" x1="0" y1="14" x2="0" y2="-48"/></g><circle class="hub" r="5"/></g>
+          <text class="lbl" x="86" y="140">GAUGE</text>
+          <g id="s-rip"><circle class="rip" cx="130" cy="222" r="64"/><circle class="rip" cx="130" cy="222" r="64"/><circle class="rip" cx="130" cy="222" r="64"/></g>
+          <line class="ink" x1="262" y1="300" x2="262" y2="214"/><circle id="s-glow" cx="262" cy="196" r="74" fill="url(#lg)"/><circle id="s-led" class="led" cx="262" cy="196" r="16"/>
+          <text class="lbl" x="238" y="160">LED</text>
+          <g id="s-hp"><path class="ink" d="M -20 0 a20 20 0 0 1 40 0" fill="none"/><rect class="cup" x="-26" y="-4" width="10" height="20"/><rect class="cup" x="16" y="-4" width="10" height="20"/></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 0G -->
+  <section id="zerog" class="dark">
+    <div class="wrap">
+      <p class="eyebrow mono">05 / Built on 0G</p>
+      <h2 class="big reveal">0G is the brain.</h2>
+      <div class="three">
+        <div class="reveal"><span class="k mono">Compute</span><p class="t">Whisper turns speech into text. A language model turns it into an intent and actions. Every call has a request id.</p></div>
+        <div class="reveal"><span class="k mono">Storage</span><p class="t">Each decision is saved as an episode and uploaded to 0G Storage with its hash.</p></div>
+        <div class="reveal"><span class="k mono">Chain</span><p class="t">A contract on 0G Galileo anchors every episode.<br><a class="addr mono" target="_blank" rel="noopener" href="https://chainscan-galileo.0g.ai/address/0x3c0a37027c79dA7934c0dfa4b2f683270a6f7A8E">0x3c0a…7A8E ↗</a></p></div>
+      </div>
+      <div class="stop reveal">
+        <p class="t">If 0G is unreachable, the device stops. It never guesses.</p>
+        <button id="kill" class="toggle" aria-pressed="false"><span class="mono">Cut the link to 0G</span><i></i></button>
+        <p class="mono state" id="kstate">link up · decisions running</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BODY -->
+  <section id="body" class="light">
+    <div class="wrap">
+      <p class="eyebrow mono">06 / The body</p>
+      <h2 class="big reveal">Five parts.</h2>
+      <ul class="parts">
+        <li class="reveal"><span class="mono">ESP32-S3</span><b>Receives the mic</b></li>
+        <li class="reveal"><span class="mono">ESP32</span><b>Scans Bluetooth</b></li>
+        <li class="reveal"><span class="mono">ESP8266</span><b>Door, light, buzzer</b></li>
+        <li class="reveal"><span class="mono">Laptop</span><b>Bridge to 0G</b></li>
+        <li class="reveal"><span class="mono">Android</span><b>App and phone mic</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="end dark">
+    <div class="wrap">
+      <h2 class="mega small reveal">Atlas.</h2>
+      <p class="body">Built at ETHGlobal Mumbai on 0G. Open source, MIT.</p>
+      <a class="btn inv" href="https://github.com/gqvz/ethmumbai" target="_blank" rel="noopener">github.com/gqvz/ethmumbai <span>↗</span></a>
+    </div>
+  </footer>
+</main>
+
+<script src="main.js?v=13"></script>
+</body>
+</html>

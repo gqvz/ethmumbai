@@ -1,6 +1,6 @@
-# Submission: Atlas, a wearable room agent (0G Physical AI: Agents with a Body)
+# Submission: Atlas, a wearable agent (0G Physical AI: Agents with a Body)
 
-**Short description:** Atlas is a voice-controlled room agent with a body: wireless mics + BLE proximity feed a laptop bridge, 0G transcribes and decides,
+**Short description:** Atlas is a wearable, voice-controlled agent with a body: wireless mics + BLE proximity feed a laptop bridge, 0G transcribes and decides,
 and an ESP8266 desk gauge (servo "door", LED, buzzer, Morse SOS) acts. Motion stays on the device; 0G makes each decision and keeps a verifiable record.
 Phone app (Android, over Tailscale) shows the orb, reminders, chats and the on-0G decision log.
 
@@ -29,6 +29,11 @@ See README. `curl localhost:8000/api/episodes`, then `curl 'localhost:8000/api/e
 ## How AI was used
 Built with Claude Code (code, firmware and Android app written with AI assistance and tested on the real hardware). 0G models run the product itself.
 
-## To fill in before submitting (not in the repo)
-- Demo video link (under 3 min) and live demo link
-- Team member names, Telegram and X handles
+## Team
+Garvit Sharma (@toastyboi1307), solo.
+
+## Links
+- Repo: https://github.com/gqvz/ethmumbai
+- Contract: https://chainscan-galileo.0g.ai/address/0x3c0a37027c79dA7934c0dfa4b2f683270a6f7A8E
+- Presentation site: `site/` in the repo (`cd site && python3 -m http.server 5180`)
+- Demo video: added on the ETHGlobal submission page

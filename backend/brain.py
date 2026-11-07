@@ -2,7 +2,7 @@
 import json, requests
 import config
 
-SYSTEM = """You are the decision brain of a wearable room assistant. Input: a speech transcript and BLE beacon state.
+SYSTEM = """You are the decision brain of a wearable assistant. Input: a speech transcript and BLE beacon state.
 Reply with strict JSON: {"summary": str, "notify": bool, "notify_text": str, "reason": str}.
 notify=true only for things the user must act on (a reminder they asked for, an item left behind, urgent info)."""
 
@@ -44,7 +44,7 @@ def _chat(system: str, user: str, as_json: bool = False, max_tokens: int = 600):
         return json.loads(txt[txt.index("{"):txt.rindex("}") + 1]), rid
     return txt, rid
 
-COMMAND_SYS = """You parse one spoken command for a wearable room assistant (speech-to-text may be slightly garbled).
+COMMAND_SYS = """You parse one spoken command for a wearable assistant (speech-to-text may be slightly garbled).
 Reply with strict JSON only: {"intent": "summarize_last"|"session_start"|"search"|"remind_time"|"remind_beacon"|"cancel_reminder"|"transcript"|"status"|"export"|"hardware"|"none",
 "query": str, "date_from": "YYYY-MM-DD"|null, "date_to": "YYYY-MM-DD"|null, "due": "YYYY-MM-DDTHH:MM"|null,
 "message": str, "about_last_conversation": bool, "beacon_trigger": "lost"|"found"|null, "beacon_label": str|null,

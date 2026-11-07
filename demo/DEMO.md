@@ -1,6 +1,6 @@
 # Room: 3-minute sponsor demo
 
-**One line:** a wearable room agent. Two clip-on mics stream to an ESP32-S3, 0G transcribes and decides, a servo/LED/buzzer desk gauge acts, and a beacon on your bag makes it remind you before you walk off without it.
+**One line:** a wearable agent. Two clip-on mics stream to an ESP32-S3, 0G transcribes and decides, a servo/LED/buzzer desk gauge acts, and a beacon on your bag makes it remind you before you walk off without it.
 
 ## Before you start (2 min)
 1. `cd backend && python3 bridge.py` (add `CONVO_GAP_S=15` so a conversation ends after 15 s of quiet; default is 90 s).
