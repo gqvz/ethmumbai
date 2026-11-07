@@ -22,8 +22,14 @@ def _migrate():
         cols = [r[1] for r in c.execute("PRAGMA table_info(reminders)")]
         if cols and "actions" not in cols: c.execute("ALTER TABLE reminders ADD COLUMN actions TEXT")
 
+class _Conn(sqlite3.Connection):
+    """`with _conn() as c:` commits AND closes (the stock context manager only commits, which leaked one file descriptor per call)."""
+    def __exit__(self, *exc):
+        try: return super().__exit__(*exc)
+        finally: self.close()
+
 def _conn():
-    c = sqlite3.connect(DB, timeout=10); c.row_factory = sqlite3.Row
+    c = sqlite3.connect(DB, timeout=10, factory=_Conn); c.row_factory = sqlite3.Row
     return c
 
 def init():

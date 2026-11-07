@@ -1,7 +1,10 @@
 """Main laptop service: serial -> merged 16 kHz audio -> VAD segments -> STT -> brain -> events.
 Run: python3 bridge.py         (reads .env for keys; works without keys, STT/brain then log 'degraded')
 """
-import json, queue, threading, time, wave, datetime, sys
+import json, queue, threading, time, wave, datetime, sys, resource
+try:                                                    # many phone/ESP connections: lift the default 1024 open-file soft limit
+    _s, _h = resource.getrlimit(resource.RLIMIT_NOFILE); resource.setrlimit(resource.RLIMIT_NOFILE, (_h if _h != resource.RLIM_INFINITY else 65536, _h))
+except Exception: pass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import numpy as np, serial
 import config, stt, brain, agent, ble_laptop
@@ -73,6 +76,7 @@ def voice_chunk(sid, body, final=False):
 class Ingest(BaseHTTPRequestHandler):
     """Plain-HTTP ingest for the ESPs: POST /audio (concatenated audio packets), POST /ble (addr|rssi|name|mfg|uuid lines)."""
     protocol_version = "HTTP/1.1"
+    timeout = 20          # drop idle keep-alive connections (the phone over Tailscale leaves them half-open)
     def do_POST(self):
         body = self.rfile.read(int(self.headers.get("Content-Length", 0)))
         src = self.headers.get("X-Device", "http")
@@ -273,7 +277,8 @@ def main():
                 live["busy"] = True; live["t"] = time.time()
                 threading.Thread(target=live_job, args=(np.concatenate(seg.buf[-300:]), seg.count), daemon=True).start()
             for ev in pres.tick(): log_event(ev); agent.on_beacon(ev)
-            agent.tick(); __import__("episodes").retry()
+            try: agent.tick(); __import__("episodes").retry()
+            except Exception as e: print(f"[tick] {type(e).__name__}: {e}", flush=True)       # one bad tick must not stop the bridge
             if time.time() - arch_t0 >= config.ARCHIVE_CHUNK_S and arch:
                 a = np.concatenate(arch); arch = []; arch_t0 = time.time()
                 write_wav(config.DATA / "archive" / f"{datetime.datetime.now():%Y%m%d-%H%M%S}.wav", a)
