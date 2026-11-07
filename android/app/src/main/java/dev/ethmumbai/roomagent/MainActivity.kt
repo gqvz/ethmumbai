@@ -65,7 +65,7 @@ private fun SettingsSheet(onClose: () -> Unit, onReplay: () -> Unit) {
         Spacer(Modifier.height(10.dp))
         androidx.compose.foundation.layout.Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
             Text("tailscale", style = T.mono.copy(color = if (url.contains("100.74.67.52")) C.fg else C.fg3), modifier = Modifier.pressText { url = "http://100.74.67.52:8000" })
-            Text("Wi-Fi", style = T.mono.copy(color = if (url.contains("10.42.0.1")) C.fg else C.fg3), modifier = Modifier.pressText { url = "http://10.42.0.1:8000" })
+            Text("wifi", style = T.mono.copy(color = if (url.contains("10.42.0.1")) C.fg else C.fg3), modifier = Modifier.pressText { url = "http://10.42.0.1:8000" })
             Text("emulator", style = T.mono.copy(color = if (url.contains("10.0.2.2")) C.fg else C.fg3), modifier = Modifier.pressText { url = "http://10.0.2.2:8000" })
         }
         Spacer(Modifier.height(22.dp))

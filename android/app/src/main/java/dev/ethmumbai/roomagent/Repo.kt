@@ -52,7 +52,7 @@ object Repo {
     fun lastNotified(c: Context): Long = prefs(c).getLong("last_note", -1)
     fun setLastNotified(c: Context, id: Long) { prefs(c).edit().putLong("last_note", id).apply() }
 
-    /** Prefer the Wi-Fi network (the laptop Wi-Fi) over mobile data, even if Android considers the Wi-Fi unvalidated. */
+    /** Prefer the Wi-Fi network over mobile data, even if Android considers it unvalidated. */
     private fun open(c: Context, url: String): HttpURLConnection {
         val u = URL(url)
         if (!u.host.startsWith("127.")) {

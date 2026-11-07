@@ -17,7 +17,7 @@ BY_ID = "/dev/serial/by-id/"
 PORTS = {  # name -> serial port (all at 460800)
     "esp32": os.getenv("PORT_ESP32", BY_ID + "usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0"),
 }
-HTTP_BIND = os.getenv('HTTP_BIND', '0.0.0.0')  # ESPs POST here over plain HTTP (Wi-Fi: 10.42.0.1)
+HTTP_BIND = os.getenv('HTTP_BIND', '0.0.0.0')  # ESPs POST here over plain HTTP (the laptop on your Wi-Fi)
 HTTP_PORT = int(os.getenv('HTTP_PORT', '8000'))
 BAUD = 460800
 SR = 16000

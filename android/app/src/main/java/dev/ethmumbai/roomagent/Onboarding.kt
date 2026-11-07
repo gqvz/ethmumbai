@@ -189,7 +189,7 @@ fun Setup(onDone: () -> Unit) {
                             Field(url, { url = it }, "address")
                             Spacer(Modifier.height(14.dp))
                             Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Text("Wi-Fi", style = T.mono.copy(color = if (url.contains("10.42.0.1")) C.fg else C.fg3), modifier = Modifier.pressText { url = "http://10.42.0.1:8000" })
+                                Text("wifi", style = T.mono.copy(color = if (url.contains("10.42.0.1")) C.fg else C.fg3), modifier = Modifier.pressText { url = "http://10.42.0.1:8000" })
                                 Text("/", style = T.mono)
                                 Text("emulator", style = T.mono.copy(color = if (url.contains("10.0.2.2")) C.fg else C.fg3), modifier = Modifier.pressText { url = "http://10.0.2.2:8000" })
                             }
@@ -246,7 +246,7 @@ private fun ProbeLine(p: Probe, beacons: Int) {
     val (color, text) = when (p) {
         Probe.Busy -> C.fg3 to "reaching room…"
         Probe.Ok -> C.ok to "connected · $beacons beacon${if (beacons == 1) "" else "s"}"
-        Probe.Fail -> C.bad to "no answer · is the Wi-Fi on?"
+        Probe.Fail -> C.bad to "no answer · is the laptop on the same Wi-Fi?"
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
         StateDot(color, p == Probe.Ok)

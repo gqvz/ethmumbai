@@ -57,9 +57,9 @@ pip install numpy pyserial requests
 (cd og && npm install)            # 0G Storage SDK, ethers
 python3 bridge.py                 # serves on :8000
 
-# the ESPs join a laptop Wi-Fi (the venue Wi-Fi was 5 GHz only)
-./Wi-Fi.sh up
 ```
+
+Set `YOUR_WIFI_SSID` and `YOUR_WIFI_PASSWORD` in each firmware's `main` source, then flash. The boards and the laptop must be on the same 2.4 GHz Wi-Fi network.
 
 Flash a board with PlatformIO, for example `cd firmware/esp8266_gauge && pio run -t upload`. The ports are set in each `platformio.ini`.
 

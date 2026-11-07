@@ -4,8 +4,8 @@
 
 ## Before you start (2 min)
 1. `cd backend && python3 bridge.py` (add `CONVO_GAP_S=15` so a conversation ends after 15 s of quiet; default is 90 s).
-2. `../Wi-Fi.sh up` **only while demoing**, then `../Wi-Fi.sh down`. The ESPs and the phone join `YOUR_WIFI_SSID` / `YOUR_WIFI_PASSWORD`.
-3. Phone: Room, Settings, address `http://100.74.67.52:8000` (the laptop's Tailscale address; both are on Tailscale, so it works from any network and the phone stays on venue Wi-Fi). `http://10.42.0.1:8000` also works if the phone is on the `YOUR_WIFI_SSID` Wi-Fi, but Android tends to drop an internet-less Wi-Fi. Keep the phone awake: `adb shell svc power stayon usb`. The status top right should read `online`.
+2. Put the laptop and the boards on the same Wi-Fi network (2.4 GHz).
+3. Phone: Atlas, Settings, address `http://100.74.67.52:8000` (the laptop's Tailscale address; both are on Tailscale, so it works from any network and the phone stays on venue Wi-Fi).Keep the phone awake: `adb shell svc power stayon usb`. The status top right should read `online`.
 4. Beacon on and in the bag. Laptop Bluetooth watches it too, so no BLE board is required.
 5. If 0G's whisper endpoint errors, the bridge switches to `qwen3.5-omni-flash` on the same 0G router for 2 minutes (proper nouns come out rougher).
 6. Fallback if the room is loud, or no hardware: play the recorded lines, `paplay demo/audio/<name>.wav` (names below), or stream them into the bridge exactly like the mics do: `python3 demo/feed_audio.py demo/audio/d1_session.wav pause:4 demo/audio/d2_talk.wav pause:22 demo/audio/d3_remind.wav`. For the beacon walk-away without a beacon: `python3 demo/fake_beacon.py -50 -95 25`.
@@ -31,7 +31,6 @@ Overview (swipe up) shows the live distance estimate and signal for the beacon.
 - **Without 0G**: no speech-to-text, no decisions and no verifiable record: Atlas stops acting by design.
 
 ## If something misbehaves
-- Orb stays grey and the pill says `offline`: the phone is not on the Wi-Fi, or the bridge is down.
+- Orb stays grey and the pill says `offline`: the phone cannot reach the laptop, or the bridge is down.
 - Commands ignored: say "Hey Atlas" then pause half a second; the matcher also accepts near misses.
 - No beacon: check `curl localhost:8000/api/state`; the beacon should show `source: laptop` or `esp`.
-- Always `./Wi-Fi.sh down` when done.
